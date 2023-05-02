@@ -97,7 +97,18 @@ def tempartureobs():
 
     session.close()
     return jsonify(results_temp)
-    
+
+
+#Tobs Route
+@app.route("/api/v1.0/tobs")
+def tobs():
+    Precipitation = dt.date(2017,8,23) - dt.timedelta(days=366)
+    Tobs = session.query(Measurement.tobs).filter(Measurement.date >= Precipitation).order_by(Measurement.date).all()
+    TobsList = list(np.ravel(Tobs))
+    return jsonify(TobsList)
+
+
+   
 #Start Route
 @app.route("/api/v1.0/<start>")
 def calc_temps(start):
@@ -113,7 +124,6 @@ def calc_temps1(start, end):
                                   func.max(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date <= end).all()
     endofdaylist = list(np.ravel(results_temp))
     return jsonify(endofdaylist)
-
 
 
 if __name__ == '__main__':
