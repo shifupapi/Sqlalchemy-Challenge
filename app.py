@@ -98,31 +98,17 @@ def tempartureobs():
     session.close()
     return jsonify(results_temp)
     
-
-# # Perform a query to retrieve the data and precipitation scores
-#     results=session.query(Measurement.date, Measurement.tobs).order_by(Measurement.date.desc()).\
-#             filter(Measurement.date>=year_back).all()
-#     session.close()
-#     all_temperature=[]
-#     for tobs,date in results:
-#         tobs_dict={}
-#         tobs_dict['date']=date
-#         tobs_dict['tobs']=tobs
-#         all_temperature.append(tobs_dict)
-#     return jsonify(all_temperature)
-
-
 #Start Route
 @app.route("/api/v1.0/<start>")
 def calc_temps(start):
     results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs),\
-                                  func.maxMeasurement.tobs).filter(Measurement.date >= start).all()
+                                  func.max(Measurement.tobs)).filter(Measurement.date >= start).all()
     beginninglist = list(np.ravel(results_temp))
     return jsonify(beginninglist)
 
-#Stop Route
+#Stop Rout
 @app.route("/api/v1.0/<start>/<end>")
-def calc_temps(start, end):
+def calc_temps1(start, end):
     results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs),\
                                   func.max(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date <= end).all()
     endofdaylist = list(np.ravel(results_temp))
