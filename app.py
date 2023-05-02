@@ -111,33 +111,20 @@ def tempartureobs():
 #         all_temperature.append(tobs_dict)
 #     return jsonify(all_temperature)
 
-@app.route("/api/v1.0/<start>/<end>")
-def calc_temps(start, end):
-    results_temp=session.query(func.min(Measurement.tobs), func.max(Measurement.tobs), func.avg(Measurement.tobs)).\
-             filter(Measurement.date>=start).filter(Measurement.date<=end).all()
-    temp=list(np.ravel(results_temp))
-
-    session.close()
-    return jsonify(temp)
-    
-
-#temp=list(np.ravel(results_temp))
-
-#     Args:
-#         start_date (string): A date string in the format %Y-%m-%d
-#         end_date (string): A date string in the format %Y-%m-%d
 
 #Start Route
 @app.route("/api/v1.0/<start>")
 def calc_temps(start):
-    results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.maxMeasurement.tobs).filter(Measurement.date >= start).all()
+    results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs),\
+                                  func.maxMeasurement.tobs).filter(Measurement.date >= start).all()
     beginninglist = list(np.ravel(results_temp))
     return jsonify(beginninglist)
 
 #Stop Route
 @app.route("/api/v1.0/<start>/<end>")
 def calc_temps(start, end):
-    results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date <= end).all()
+    results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs),\
+                                  func.max(Measurement.tobs)).filter(Measurement.date >= start).filter(Measurement.date <= end).all()
     endofdaylist = list(np.ravel(results_temp))
     return jsonify(endofdaylist)
 
