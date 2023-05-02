@@ -117,7 +117,7 @@ def calc_temps(start):
     beginninglist = list(np.ravel(results_temp))
     return jsonify(beginninglist)
 
-#Stop Rout
+#Stop Route
 @app.route("/api/v1.0/<start>/<end>")
 def calc_temps1(start, end):
     results_temp = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs),\
